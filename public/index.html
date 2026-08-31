@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>MaxPlex - Premium Cinema, OTT & 100+ Live TV</title>
+  <meta name="description" content="Stream and download unlimited 4K HDR movies, Hindi web series, Korean dramas, and 100+ Live TV channels on Android Mobile, TV & Windows.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --surface: #0b0f19;
+      --card-bg: rgba(15, 23, 42, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #00E5FF;
+      --primary-hover: #00b4d8;
+      --accent: #6366F1;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Ambient Spotlight Background */
+    .hero-spotlight {
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, rgba(99, 102, 241, 0.08) 40%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Navigation */
+    header {
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(3, 7, 18, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-logo-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+    }
+
+    .brand-name {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-name span {
+      background: linear-gradient(135deg, #00E5FF, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-menu a:hover { color: #fff; }
+
+    .header-cta-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-cta-btn:hover {
+      background: var(--primary);
+      color: #030712;
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
+
+    /* Professional Cinematic Hero */
+    .hero {
+      position: relative;
+      padding: 90px 0 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 900;
+      letter-spacing: -1.8px;
+      line-height: 1.08;
+      margin-bottom: 22px;
+      background: linear-gradient(180deg, #FFFFFF 20%, #CBD5E1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #00E5FF 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtext {
+      font-size: clamp(16px, 2.2vw, 19px);
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 36px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .btn-main-download {
+      background: linear-gradient(135deg, #00E5FF 0%, #00b4d8 100%);
+      color: #030712;
+      padding: 16px 36px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      min-width: 250px;
+    }
+
+    .btn-main-download:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0, 229, 255, 0.6);
+    }
+
+    .btn-main-download:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+    /* Cinematic Poster Showcase (Streamlined & Elegant) */
+    .hero-carousel-wrapper {
+      margin-top: 55px;
+      position: relative;
+      overflow: hidden;
+      padding: 20px 0;
+    }
+
+    .hero-carousel-wrapper::before, .hero-carousel-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 200px;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+    
+    .hero-carousel-wrapper::before { left: 0; background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
+    .hero-carousel-wrapper::after { right: 0; background: linear-gradient(to left, var(--bg) 0%, transparent 100%); }
+
+    .carousel-track {
+      display: flex;
+      gap: 18px;
+      width: max-content;
+      animation: smoothScroll 35s linear infinite;
+    }
+
+    @keyframes smoothScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .poster-card {
+      width: 170px;
+      height: 255px;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+
+    .poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Live TV Channels Strip */
+    .live-tv-strip {
+      padding: 40px 0 60px;
+      background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.4) 50%, transparent 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .strip-label {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+    }
+
+    .strip-label span {
+      background: #ef4444;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 900;
+      margin-right: 8px;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+    }
+
+    .tv-ticker-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .tv-ticker-wrapper::before, .tv-ticker-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 180px;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+    
+    .tv-ticker-wrapper::before { left: 0; background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
+    .tv-ticker-wrapper::after { right: 0; background: linear-gradient(to left, var(--bg) 0%, transparent 100%); }
+
+    .tv-track {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      width: max-content;
+      animation: tvTickerScroll 30s linear infinite;
+      padding: 10px 0;
+    }
+
+    @keyframes tvTickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .tv-badge {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 14px 28px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      min-width: 155px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      flex-shrink: 0;
+    }
+
+    .tv-badge:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 229, 255, 0.35);
+    }
+
+    .tv-badge img {
+      height: 52px;
+      max-width: 120px;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.7));
+      transition: transform 0.2s;
+    }
+
+    @media (max-width: 768px) {
+      .tv-badge {
+        height: 64px;
+        min-width: 120px;
+        padding: 10px 18px;
+        border-radius: 16px;
+      }
+      .tv-badge img {
+        height: 42px;
+        max-width: 90px;
+      }
+    }
+
+    /* Features Grid */
+    .features { padding: 80px 0; }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      margin-bottom: 10px;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px 26px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter: blur(15px);
+    }
+
+    .feature-box:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(0, 229, 255, 0.1);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-box h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .feature-box p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Devices Section */
+    .devices-wrapper {
+      padding: 60px 0 80px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .device-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 36px;
+    }
+
+    .device-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 34px 24px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter: blur(15px);
+    }
+
+    .device-card:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .device-icon-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.12), rgba(99, 102, 241, 0.12));
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .device-card:hover .device-icon-box {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.25), rgba(99, 102, 241, 0.25));
+      border-color: var(--primary);
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 229, 255, 0.3);
+    }
+
+    .device-card h4 {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .device-card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,229,255,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .spinner { animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      background: #02040a;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand img { width: 30px; height: 30px; border-radius: 8px; }
+
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 14px;
+    }
+
+    .footer-nav a { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+    .footer-nav a:hover { color: var(--primary); }
+
+    @media (max-width: 768px) {
+      .nav-menu { display: none; }
+      .hero { padding: 60px 0 50px; }
+      .btn-main-download, .btn-secondary { width: 100%; min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero-spotlight"></div>
+
+  <!-- Navigation -->
+  <header>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <a href="#" class="brand">
+        <img src="assets/logo.png" alt="MaxPlex" class="brand-logo-img">
+        <div class="brand-name">Max<span>Plex</span></div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#channels">Live TV</a></li>
+        <li><a href="#devices">Devices</a></li>
+        <li><a href="https://t.me/max_plex" target="_blank">Telegram</a></li>
+      </ul>
+
+      <button onclick="secureDownload()" class="header-cta-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download APK
+      </button>
+    </div>
+  </header>
+
+  <!-- Clean, Professional OTT Hero -->
+  <section class="hero">
+    <div class="container hero-container">
+      <h1>Stream Unlimited Cinema, Series & <span>Live TV</span></h1>
+      
+      <p class="hero-subtext">
+        Experience 4K HDR playback with floating Picture-in-Picture, high-speed offline downloads, and 100+ live Indian TV channels — completely free.
+      </p>
+
+      <div class="hero-actions">
+        <button id="downloadBtn" onclick="secureDownload()" class="btn-main-download">
+          <span id="btnText" style="display: flex; align-items: center; gap: 10px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download MaxPlex (34 MB)
+          </span>
+        </button>
+
+        <a href="https://t.me/max_plex" target="_blank" class="btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          Telegram Updates
+        </a>
+      </div>
+
+      <div class="hero-meta">
+        <span>✓ Android 7.0+</span>
+        <span>✓ Android TV & Fire TV</span>
+        <span>✓ Zero Ads</span>
+        <span>✓ In-App Auto Update</span>
+      </div>
+    </div>
+
+    <!-- Seamless Cinematic Poster Carousel -->
+    <div class="hero-carousel-wrapper">
+      <div class="carousel-track">
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/xrfvAhrMdT6Uwg5fyTyQAZBYyiu.jpg" alt="Panchayat" loading="lazy"></div>
+        <div class="poster-card"><img src="https://catimages.org/images/2024/11/14/Gaus-Electronics-2022-Korean-Drama-Hindi-Dubbed.jpg" alt="Gaus Electronics" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/lghfb8beej1aH9ML8QyeSixniom.jpg" alt="Taxi Driver" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/7ZXLZ3KYL3IVvsSHBZaHjcNQzNU.jpg" alt="Queen of Tears" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/mXLOHHc1Zeuwsl4xYKjKh2280oL.jpg" alt="Blue Beetle" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg" alt="Squid Game" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar The Way of Water" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" alt="Avengers Endgame" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interstellar" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg" alt="Dark" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" alt="Stranger Things" loading="lazy"></div>
+
+        <!-- Seamless Loop Duplicate -->
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/xrfvAhrMdT6Uwg5fyTyQAZBYyiu.jpg" alt="Panchayat" loading="lazy"></div>
+        <div class="poster-card"><img src="https://catimages.org/images/2024/11/14/Gaus-Electronics-2022-Korean-Drama-Hindi-Dubbed.jpg" alt="Gaus Electronics" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/lghfb8beej1aH9ML8QyeSixniom.jpg" alt="Taxi Driver" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/7ZXLZ3KYL3IVvsSHBZaHjcNQzNU.jpg" alt="Queen of Tears" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/mXLOHHc1Zeuwsl4xYKjKh2280oL.jpg" alt="Blue Beetle" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg" alt="Squid Game" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar The Way of Water" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" alt="Avengers Endgame" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interstellar" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg" alt="Dark" loading="lazy"></div>
+        <div class="poster-card"><img src="https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" alt="Stranger Things" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Channels Strip -->
+  <section id="channels" class="live-tv-strip">
+    <div class="strip-label"><span>LIVE</span> 100+ Live Indian & Entertainment Channels</div>
+    <div class="tv-ticker-wrapper">
+      <div class="tv-track">
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Star_Plus.png" alt="Star Plus"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/SET_MAX.png" alt="Sony Max"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Colors_HD.png" alt="Colors TV"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Zee_Cinema.png" alt="Zee Cinema"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_1.png" alt="Star Sports 1"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Aaj_Tak.png" alt="Aaj Tak"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Sony_SAB.png" alt="Sony SAB"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Zee_TV.png" alt="Zee TV"></div>
+
+        <!-- Seamless Loop Duplicate -->
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Star_Plus.png" alt="Star Plus"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/SET_MAX.png" alt="Sony Max"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Colors_HD.png" alt="Colors TV"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Zee_Cinema.png" alt="Zee Cinema"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_1.png" alt="Star Sports 1"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Aaj_Tak.png" alt="Aaj Tak"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Sony_SAB.png" alt="Sony SAB"></div>
+        <div class="tv-badge"><img src="https://jiotvimages.cdn.jio.com/dare_images/images/Zee_TV.png" alt="Zee TV"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clean 6-Feature Grid -->
+  <section id="features" class="features container">
+    <div class="section-header">
+      <h2>Everything You Expect From Modern OTT</h2>
+      <p>Powerful playback technology built with zero compromises.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="feature-box">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+        <h3>4K HDR Video Core</h3>
+        <p>Hardware-accelerated rendering engine with 60FPS support, dynamic tone mapping, and multi-language audio selection.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+        </div>
+        <h3>100+ Live Channels</h3>
+        <p>Stream live sports, breaking news, and daily entertainment serials with instant adaptive HLS channel switching.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        </div>
+        <h3>Floating Picture-in-Picture</h3>
+        <p>Keep watching while chatting or browsing. Includes double-tap to seek, volume gestures, and background audio.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </div>
+        <h3>High-Speed Downloads</h3>
+        <p>Direct 10Gbps Google Video & Cloudflare CDN mirrors. Download full seasons and episodes in one tap for offline viewing.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <h3>Cross-Device Sync</h3>
+        <p>Start watching on mobile and resume at the exact second on Android TV or PC with real-time watch history syncing.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <h3>In-App Auto Update</h3>
+        <p>Built-in OTA updater delivers features and scraper patches automatically without relying on app stores.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Device Ecosystem -->
+  <section id="devices" class="devices-wrapper container">
+    <div class="section-header">
+      <h2>Available on All Screens</h2>
+      <p>One unified account for your phone, television, and computer.</p>
+    </div>
+
+    <div class="device-cards">
+      <div class="device-card">
+        <div class="device-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        </div>
+        <h4>Android Mobile</h4>
+        <p>Optimized for touch gestures, notch screens, and floating PiP.</p>
+        <button onclick="secureDownload()" class="header-cta-btn" style="width: 100%; justify-content: center;">Download APK</button>
+      </div>
+
+      <div class="device-card">
+        <div class="device-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+        </div>
+        <h4>Android TV & Fire TV</h4>
+        <p>Leanback remote UI with quick 6-digit numeric PIN pairing.</p>
+        <button onclick="secureDownload()" class="header-cta-btn" style="width: 100%; justify-content: center;">Download TV APK</button>
+      </div>
+
+      <div class="device-card">
+        <div class="device-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <h4>Windows PC</h4>
+        <p>Native HD player with keyboard shortcuts and multi-monitor setup.</p>
+        <a href="https://t.me/max_plex" target="_blank" class="header-cta-btn" style="width: 100%; justify-content: center; text-decoration: none;">Join Telegram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="MaxPlex">
+        <span style="font-weight: 800; font-size: 17px; color: #fff;">MaxPlex</span>
+      </div>
+      <div class="footer-nav">
+        <a href="#features">Features</a>
+        <a href="#channels">Live TV</a>
+        <a href="#devices">Devices</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="data-deletion.html">Data Deletion</a>
+        <a href="https://t.me/max_plex" target="_blank">Telegram</a>
+        <a href="https://whatsapp.com/channel/0029Vb8LXDzJUM2SB8YZBa2M" target="_blank">WhatsApp</a>
+      </div>
+      <p>© 2026 MaxPlex Media Platform. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">
+    <svg style="color: var(--primary)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    <span id="toastMsg">Download started!</span>
+  </div>
+
+  <!-- Obfuscated Secure In-Memory Blob Download Script -->
+  <script>
+    (function() {
+      // Obfuscated Encrypted Byte Array for Source Origin
+      const _0x5a = [
+        0x68, 0x74, 0x74, 0x70, 0x73, 0x3a, 0x2f, 0x2f, 0x6d, 0x6f, 0x76, 0x2e,
+        0x61, 0x69, 0x6d, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x79, 0x63, 0x62,
+        0x73, 0x65, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x65, 0x6c, 0x65, 0x61,
+        0x73, 0x65, 0x73, 0x2f, 0x4d, 0x61, 0x78, 0x50, 0x6c, 0x65, 0x78, 0x2e,
+        0x61, 0x70, 0x6b
+      ];
+
+      function _assembleUri() {
+        return String.fromCharCode.apply(null, _0x5a);
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+        if (msg) toastMsg.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 4000);
+      }
+
+      window.secureDownload = async function() {
+        const btn = document.getElementById('downloadBtn');
+        const btnText = document.getElementById('btnText');
+        
+        if (btn) btn.disabled = true;
+        
+        if (btnText) {
+          btnText.innerHTML = `
+            <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>
+            Securing Connection...
+          `;
+        }
+
+        const directUrl = _assembleUri();
+
+        try {
+          // Stream file into volatile browser memory (Blob)
+          const response = await fetch(directUrl, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-store'
+          });
+
+          if (!response.ok) throw new Error('Fetch failed');
+
+          const contentLength = +response.headers.get('Content-Length') || 35651584;
+          const reader = response.body.getReader();
+          let receivedLength = 0;
+          let chunks = [];
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            receivedLength += value.length;
+
+            if (contentLength && btnText) {
+              const percent = Math.min(Math.round((receivedLength / contentLength) * 100), 99);
+              const mbReceived = (receivedLength / (1024 * 1024)).toFixed(1);
+              btnText.innerHTML = `
+                <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                Streaming ${percent}% (${mbReceived} MB)...
+              `;
+            }
+          }
+
+          // Create local ephemeral Blob URL - Browser only records blob:https://github.io/... in Downloads!
+          const blob = new Blob(chunks, { type: 'application/vnd.android.package-archive' });
+          const blobUrl = window.URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = 'MaxPlex.apk';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          // Clean up volatile memory
+          setTimeout(() => {
+            window.URL.revokeObjectURL(blobUrl);
+          }, 60000);
+
+          showToast('MaxPlex APK downloaded successfully!');
+
+          if (btnText) {
+            btnText.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Downloaded (34 MB)!
+            `;
+          }
+        } catch (e) {
+          // Graceful fallback for cross-origin restricted contexts
+          const a = document.createElement('a');
+          a.href = directUrl;
+          a.setAttribute('download', 'MaxPlex.apk');
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          showToast('Download started!');
+        }
+
+        setTimeout(() => {
+          if (btn) btn.disabled = false;
+          if (btnText) {
+            btnText.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download MaxPlex (34 MB)
+            `;
+          }
+        }, 4000);
+      };
+    })();
+  </script>
+</body>
+</html>
