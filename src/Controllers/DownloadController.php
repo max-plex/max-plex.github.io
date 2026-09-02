@@ -87,10 +87,21 @@ class DownloadController {
             if ($res) {
                 $res['input_url'] = $rawUrl;
                 Response::success($res, 'KMHD download link resolved successfully');
+                return;
             }
         }
 
-        // 7. Generic Direct Redirect Unwrapper
+        // 7. NexDrive Gateway (VegaMovies nexdrive.you / vgmlinks / fast-dl)
+        if (str_contains($rawUrl, 'nexdrive') || str_contains($rawUrl, 'vgmlinks')) {
+            $res = \App\Services\VegaMoviesService::resolveNexDrive($rawUrl);
+            if ($res) {
+                $res['input_url'] = $rawUrl;
+                Response::success($res, 'NexDrive download link resolved successfully');
+                return;
+            }
+        }
+
+        // 8. Generic Direct Redirect Unwrapper
         $directUrl = ScraperService::getFinalRedirectUrl($rawUrl);
         Response::success([
             'input_url'           => $rawUrl,

@@ -5,6 +5,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Services\ScraperService;
 use App\Services\KatDramaService;
+use App\Services\VegaMoviesService;
 use DOMDocument;
 use DOMXPath;
 
@@ -39,6 +40,15 @@ class MediaController {
         Response::success($result, 'K-Drama feed fetched successfully');
     }
 
+    /**
+     * Dedicated VegaMovies Feed (/api/v1/media/vegamovies)
+     */
+    public function getVegaMoviesFeed(Request $request): void {
+        $page = max(1, (int)$request->getQuery('page', 1));
+        $result = VegaMoviesService::getLatest($page);
+        Response::success($result, 'VegaMovies feed fetched successfully');
+    }
+
     public function search(Request $request): void {
         $query = trim($request->getQuery('query') ?? ($request->getQuery('q') ?? ''));
         $page = max(1, (int)$request->getQuery('page', 1));
@@ -66,6 +76,14 @@ class MediaController {
             $kdramaRes = KatDramaService::search($query, $page);
             if (!empty($kdramaRes['posts'])) {
                 $items = array_merge($items, $kdramaRes['posts']);
+            }
+        }
+
+        // 3. Search VegaMovies
+        if ($source === 'all' || $source === 'vegamovies' || $source === 'vega') {
+            $vegaRes = VegaMoviesService::search($query, $page);
+            if (!empty($vegaRes['posts'])) {
+                $items = array_merge($items, $vegaRes['posts']);
             }
         }
 
@@ -154,7 +172,16 @@ class MediaController {
             $slug = end($parts);
         }
 
-        // 1. Explicit KatDrama Request
+        // 1. Explicit VegaMovies Request
+        if ($source === 'vegamovies' || $source === 'vega' || str_contains($rawUrl, 'vegamoviess.fo') || preg_match('/^\d+-[a-z0-9-]+/i', $slug)) {
+            $vegaDetails = VegaMoviesService::getDetails($slug);
+            if ($vegaDetails) {
+                Response::success($vegaDetails, 'VegaMovies details fetched successfully');
+                return;
+            }
+        }
+
+        // 2. Explicit KatDrama Request
         if ($source === 'kdrama' || $source === 'katdrama' || str_contains($rawUrl, 'katdrama.my')) {
             $kdramaDetails = KatDramaService::getDetails($slug);
             if ($kdramaDetails) {
